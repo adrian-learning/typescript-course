@@ -1,30 +1,42 @@
+import { DiasDaSemana } from "../enums/dias-da-semana.js"
+import { ListaNegociacoes } from "../models/lista-negociacoes.js"
 import { Negociacao } from "../models/negociacao.js"
+import { MensagemView } from "../views/mensagem-view.js"
+import { NegociacoesView } from "../views/negociacoes-view.js"
 
 export class NegociacaoController { 
     private _dataInput: HTMLInputElement
     private _quantidadeInput: HTMLInputElement
     private _valorInput: HTMLInputElement
+    private _negociacoes = new ListaNegociacoes()
+    private negociacoesView = new NegociacoesView('#negociacoesView')
+    private mensagemView = new MensagemView('#mensagemView')
 
     constructor() {
-        this._dataInput = document.querySelector('#data')
-        this._quantidadeInput = document.querySelector('#quantidade')
-        this._valorInput = document.querySelector('#valor')
+        this._dataInput = document.querySelector('#data') as HTMLInputElement
+        this._quantidadeInput = document.querySelector('#quantidade') as HTMLInputElement
+        this._valorInput = document.querySelector('#valor') as HTMLInputElement
+      
     }
 
-    adicionar() {
-        const negociacao = this.criarNegociacao()
-        this.limparFormulario()
+    public adicionar() {
+        const negociacao = Negociacao.criarNegociacao(
+            this._dataInput.value,
+            this._quantidadeInput.value,
+            this._valorInput.value
+        )
+        if(!this.diaUtil(negociacao.data)){
+            this.mensagemView.update('Apenas negociações em dias úteis são válidas!')
+            return
+        }
         
-        console.log(negociacao)
+        this.limparFormulario()
+        this._negociacoes.adicionar(negociacao)
+        this.updateViews()
+        console.log(this._negociacoes.listar())
     }
 
-    private criarNegociacao(): Negociacao {
-        const exp = /-/g
-        const data = new Date(this._dataInput.value.replace(exp,','))
-        const quantidade = parseInt(this._quantidadeInput.value)
-        const valor = parseFloat(this._valorInput.value)
-        return new Negociacao({data, quantidade, valor})
-    }
+  
 
     private limparFormulario(): void {
         this._dataInput.value = ''
@@ -32,5 +44,14 @@ export class NegociacaoController {
         this._valorInput.value = ''
         
         this._dataInput.focus()
+    }
+
+    private updateViews(): void {
+        this.negociacoesView.update(this._negociacoes)
+        this.mensagemView.update('Negociação realizada com sucesso!')
+    }
+
+    private diaUtil(data: Date): boolean {
+        return data.getDay() > DiasDaSemana.DOMINGO && data.getDay() < DiasDaSemana.SABADO
     }
 }

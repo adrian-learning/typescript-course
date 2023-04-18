@@ -1,12 +1,16 @@
 export class Negociacao {
-    //Destructred Object with typescript
     constructor({ data, quantidade, valor }) {
         this._data = data;
-        this._quantidade = quantidade;
-        this._valor = valor;
+        this.quantidade = quantidade;
+        this.valor = valor;
     }
-    get data() { return this._data; }
-    get quantidade() { return this._quantidade; }
-    get valor() { return this._valor; }
-    get volume() { return this._valor * this._quantidade; }
+    get data() { return new Date(this._data); }
+    get volume() { return this.valor * this.quantidade; }
+    static criarNegociacao(dataValue, quantidadeValue, valorValue) {
+        const exp = /-/g;
+        const data = new Date(dataValue.replace(exp, ','));
+        const quantidade = parseInt(quantidadeValue);
+        const valor = parseFloat(valorValue);
+        return new Negociacao({ data, quantidade, valor });
+    }
 }
