@@ -13,4 +13,17 @@ export class Negociacao {
         const valor = parseFloat(valorValue);
         return new Negociacao({ data, quantidade, valor });
     }
+    isEqual(obj) {
+        return this.data.getDate() === obj.data.getDate() &&
+            this.data.getMonth() === obj.data.getMonth() &&
+            this.data.getFullYear() === obj.data.getFullYear();
+    }
+    toPrint() {
+        return `
+            Data: ${this._data},
+            Quantidade: ${this.quantidade},
+            Valor: ${this.valor}
+        `;
+    }
 }
+//# sourceMappingURL=negociacao.js.map

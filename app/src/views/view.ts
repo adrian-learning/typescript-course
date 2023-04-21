@@ -1,3 +1,4 @@
+import { logarTempoExecucao } from "../decorators/logar-tempo-execucao.js"
 
 export abstract class View<T> {
     protected elemento: HTMLElement
@@ -8,6 +9,7 @@ export abstract class View<T> {
 
     protected abstract template(model: T): string
 
+    
     protected abstract update(model: T): void
 
 }

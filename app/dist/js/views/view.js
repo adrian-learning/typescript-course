@@ -3,3 +3,4 @@ export class View {
         this.elemento = document.querySelector(selector);
     }
 }
+//# sourceMappingURL=view.js.map

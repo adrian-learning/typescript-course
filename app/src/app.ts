@@ -11,3 +11,12 @@ if(form){
 }else{
     throw new Error(`Formulário nulo - recarregue a página`)
 }
+
+const btnImportar = document.querySelector('#btn-importar')
+if(btnImportar){
+    btnImportar.addEventListener('click', () => {
+        controller.importarDados()
+    })
+}else{
+    throw new Error('Botão importar não encontrado.')
+}

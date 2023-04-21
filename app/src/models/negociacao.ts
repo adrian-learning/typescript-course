@@ -1,4 +1,7 @@
-export class Negociacao {
+
+import { IObjetoModelo } from "../interfaces/modelo.js"
+
+export class Negociacao implements IObjetoModelo<Negociacao>{
     private _data: Date
     readonly quantidade: number
     readonly valor: number
@@ -19,5 +22,19 @@ export class Negociacao {
         const quantidade = parseInt(quantidadeValue)
         const valor = parseFloat(valorValue)
         return new Negociacao({data, quantidade, valor})
+    }
+
+    public isEqual(obj: Negociacao): boolean{
+        return this.data.getDate() === obj.data.getDate() &&
+                this.data.getMonth() === obj.data.getMonth() &&
+                this.data.getFullYear() === obj.data.getFullYear()
+    }
+
+    public toPrint(): string{
+        return `
+            Data: ${this._data},
+            Quantidade: ${this.quantidade},
+            Valor: ${this.valor}
+        `
     }
 }
